@@ -17,13 +17,13 @@ class CustomButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: color == null ? Colors.white : Colors.black,
+          color: color == null ? Colors.grey : Colors.black,
         ),
       ),
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(double.infinity, 50),
-        primary: color,
+        backgroundColor: color,
       ),
     );
   }

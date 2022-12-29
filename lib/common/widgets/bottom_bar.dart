@@ -2,11 +2,14 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nodejs2/constants/global_variables.dart';
 import 'package:flutter_nodejs2/features/account/screen/account_screen.dart';
+import 'package:flutter_nodejs2/features/cart/screen/cart_screen.dart';
 import 'package:flutter_nodejs2/features/home/screens/homescreen.dart';
+import 'package:flutter_nodejs2/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class BottomBar extends StatefulWidget {
-  static const String routeName = '/actual-hone';
-  const BottomBar({super.key});
+  static const String routeName = '/actual-home';
+  const BottomBar({Key? key}) : super(key: key);
 
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -16,11 +19,13 @@ class _BottomBarState extends State<BottomBar> {
   int _page = 0;
   double bottomBarWidth = 42;
   double bottomBarBorderWidth = 5;
+
   List<Widget> pages = [
     const HomeScreen(),
     const AccountScreen(),
-    const Center(child: Text('Cart Page'),),
+    const CartScreen(),
   ];
+
   void updatePage(int page) {
     setState(() {
       _page = page;
@@ -29,6 +34,8 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    final userCartLen = context.watch<UserProvider>().user.cart.length;
+
     return Scaffold(
       body: pages[_page],
       bottomNavigationBar: BottomNavigationBar(
@@ -39,6 +46,7 @@ class _BottomBarState extends State<BottomBar> {
         iconSize: 28,
         onTap: updatePage,
         items: [
+          // HOME
           BottomNavigationBarItem(
             icon: Container(
               width: bottomBarWidth,
@@ -94,9 +102,7 @@ class _BottomBarState extends State<BottomBar> {
               ),
               child: Badge(
                 elevation: 0,
-                badgeContent: Text(
-                    // userCartLen.toString()
-                    '2'),
+                badgeContent: Text(userCartLen.toString()),
                 badgeColor: Colors.white,
                 child: const Icon(
                   Icons.shopping_cart_outlined,
@@ -104,7 +110,7 @@ class _BottomBarState extends State<BottomBar> {
               ),
             ),
             label: '',
-          )
+          ),
         ],
       ),
     );

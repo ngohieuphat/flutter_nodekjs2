@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_nodejs2/common/widgets/loader.dart';
-import 'package:flutter_nodejs2/models/product.dart';
+
+import '../../../common/widgets/loader.dart';
+import '../../../models/product.dart';
+import '../../product_details/screen/product_detail_screen.dart';
+import '../services/home_servic.dart';
 
 class DealOfDay extends StatefulWidget {
   const DealOfDay({Key? key}) : super(key: key);
@@ -11,26 +14,26 @@ class DealOfDay extends StatefulWidget {
 
 class _DealOfDayState extends State<DealOfDay> {
   Product? product;
-  // final HomeServices homeServices = HomeServices();
+  final HomeServices homeServices = HomeServices();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   fetchDealOfDay();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    fetchDealOfDay();
+  }
 
-  // void fetchDealOfDay() async {
-  //   product = await homeServices.fetchDealOfDay(context: context);
-  //   setState(() {});
-  // }
+  void fetchDealOfDay() async {
+    product = await homeServices.fetchDealOfDay(context: context);
+    setState(() {});
+  }
 
-  // void navigateToDetailScreen() {
-  //   Navigator.pushNamed(
-  //     context,
-  //     ProductDetailScreen.routeName,
-  //     arguments: product,
-  //   );
-  // }
+  void navigateToDetailScreen() {
+    Navigator.pushNamed(
+      context,
+      ProductDetailScreen.routeName,
+      arguments: product,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class _DealOfDayState extends State<DealOfDay> {
         : product!.name.isEmpty
             ? const SizedBox()
             : GestureDetector(
-                // onTap: navigateToDetailScreen,
+                onTap: navigateToDetailScreen,
                 child: Column(
                   children: [
                     Container(
@@ -55,24 +58,24 @@ class _DealOfDayState extends State<DealOfDay> {
                       height: 235,
                       fit: BoxFit.fitHeight,
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 15),
-                      alignment: Alignment.topLeft,
-                      child: const Text(
-                        '\$100',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding:
-                          const EdgeInsets.only(left: 15, top: 5, right: 40),
-                      child: const Text(
-                        'Rivaan',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
+                    // Container(
+                    //   padding: const EdgeInsets.only(left: 15),
+                    //   alignment: Alignment.topLeft,
+                    //   child: const Text(
+                    //     '\$100',
+                    //     style: TextStyle(fontSize: 18),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   alignment: Alignment.topLeft,
+                    //   padding:
+                    //       const EdgeInsets.only(left: 15, top: 5, right: 40),
+                    //   child: const Text(
+                    //     'Rivaan',
+                    //     maxLines: 2,
+                    //     overflow: TextOverflow.ellipsis,
+                    //   ),
+                    // ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
