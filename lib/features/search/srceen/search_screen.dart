@@ -1,20 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_nodejs2/constants/global_variables.dart';
-import 'package:flutter_nodejs2/features/home/widgets/address_box.dart';
-import 'package:flutter_nodejs2/features/home/widgets/carousel_images.dart';
-import 'package:flutter_nodejs2/features/home/widgets/deal_of_day.dart';
-import 'package:flutter_nodejs2/features/home/widgets/top_categories.dart';
-import 'package:flutter_nodejs2/features/search/srceen/search_screen.dart';
+import 'package:flutter_nodejs2/features/product_details/screen/product_detail_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const String routeName = '/home';
-  const HomeScreen({Key? key}) : super(key: key);
+import '../../../common/widgets/loader.dart';
+import '../../../constants/global_variables.dart';
+import '../../../models/product.dart';
+import '../../home/widgets/address_box.dart';
+import '../servic/search_services.dart';
+import '../widgets/searched_product.dart';
+
+class SearchScreen extends StatefulWidget {
+  static const String routeName = '/search-screen';
+  final String searchQuery;
+  const SearchScreen({super.key , required this.searchQuery});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SearchScreenState extends State<SearchScreen> {
+   List<Product>? products;
+  final SearchServices searchServices = SearchServices();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchSearchedProduct();
+  }
+
+  fetchSearchedProduct() async {
+    products = await searchServices.fetchSearchedProduct(
+        context: context, searchQuery: widget.searchQuery);
+    setState(() {});
+  }
+
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
   }
@@ -94,18 +112,33 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: const [
-            AddressBox(),
-            SizedBox(height: 10),
-            TopCategories(),
-            SizedBox(height: 10),
-            CarouselImage(),
-            DealOfDay(),
-          ],
-        ),
-      ),
+      body: products == null
+          ? const Loader()
+          : Column(
+              children: [
+                const AddressBox(),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: products!.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            ProductDetailScreen.routeName,
+                            arguments: products![index],
+                          );
+                        },
+                        child: SearchedProduct(
+                          product: products![index],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
