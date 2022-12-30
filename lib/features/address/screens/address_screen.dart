@@ -191,7 +191,11 @@ class _AddressScreenState extends State<AddressScreen> {
                 margin: const EdgeInsets.only(top: 15),
                 height: 50,
                 onPressed: () => payPressed(address),
+                loadingIndicator: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
+             
               const SizedBox(height: 10),
               GooglePayButton(
                 onPressed: () => payPressed(address),
@@ -199,12 +203,14 @@ class _AddressScreenState extends State<AddressScreen> {
                 onPaymentResult: onGooglePayResult,
                 paymentItems: paymentItems,
                 height: 50,
+                // style: GooglePayButtonStyle.black,
                 type: GooglePayButtonType.buy,
                 margin: const EdgeInsets.only(top: 15),
                 loadingIndicator: const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
+              const SizedBox(height: 15),
             ],
           ),
         ),

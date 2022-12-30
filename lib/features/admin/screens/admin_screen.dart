@@ -1,10 +1,12 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_nodejs2/constants/global_variables.dart';
-import 'package:flutter_nodejs2/features/admin/screens/posts_screen.dart';
+
+import '../../../constants/global_variables.dart';
+import 'analtyics_screen.dart';
+import 'order_screen.dart';
+import 'posts_screen.dart';
 
 class AdminScreen extends StatefulWidget {
-  const AdminScreen({super.key});
+  const AdminScreen({Key? key}) : super(key: key);
 
   @override
   State<AdminScreen> createState() => _AdminScreenState();
@@ -14,15 +16,13 @@ class _AdminScreenState extends State<AdminScreen> {
   int _page = 0;
   double bottomBarWidth = 42;
   double bottomBarBorderWidth = 5;
+
   List<Widget> pages = [
     const PostsScreen(),
-    const Center(
-      child: Text('Analytics Page'),
-    ),
-    const Center(
-      child: Text('Cart Page'),
-    ),
+    const AnalyticsScreen(),
+    const OrdersScreen(),
   ];
+
   void updatePage(int page) {
     setState(() {
       _page = page;
@@ -33,33 +33,36 @@ class _AdminScreenState extends State<AdminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: AppBar(
-            flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: GlobalVariables.appBarGradient,
-              ),
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: GlobalVariables.appBarGradient,
             ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Image.asset(
-                    'assets/img/amazon_in.png',
-                    width: 120,
-                    height: 45,
-                    // color: Colors.black,
-                  ),
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                child: Image.asset(
+                  'assets/img/amazon_in.png',
+                  width: 120,
+                  height: 45,
+                  color: Colors.black,
                 ),
-                const Text(
-                  'Admin',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black),
-                )
-              ],
-            ),
-          )),
+              ),
+              const Text(
+                'Admin',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
       body: pages[_page],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _page,
@@ -69,7 +72,7 @@ class _AdminScreenState extends State<AdminScreen> {
         iconSize: 28,
         onTap: updatePage,
         items: [
-          // post
+          // POSTS
           BottomNavigationBarItem(
             icon: Container(
               width: bottomBarWidth,
@@ -89,7 +92,7 @@ class _AdminScreenState extends State<AdminScreen> {
             ),
             label: '',
           ),
-          // analytics
+          // ANALYTICS
           BottomNavigationBarItem(
             icon: Container(
               width: bottomBarWidth,
@@ -109,7 +112,7 @@ class _AdminScreenState extends State<AdminScreen> {
             ),
             label: '',
           ),
-          // Order
+          // ORDERS
           BottomNavigationBarItem(
             icon: Container(
               width: bottomBarWidth,
@@ -129,7 +132,6 @@ class _AdminScreenState extends State<AdminScreen> {
             ),
             label: '',
           ),
-    
         ],
       ),
     );
